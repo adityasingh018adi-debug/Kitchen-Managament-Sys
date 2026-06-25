@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import clsx from "clsx";
 import { useAuthStore } from "@/lib/auth-store";
 
@@ -30,38 +31,63 @@ export function Sidebar() {
 
   return (
     <aside className="flex h-screen w-64 flex-col border-r border-neutral-800 bg-neutral-950/95">
-      <div className="px-5 py-6">
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="px-5 py-6"
+      >
         <p className="text-lg font-semibold text-white">KitchenOS AI</p>
         <p className="text-xs text-neutral-500">Central Kitchen Management</p>
-      </div>
+      </motion.div>
 
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-3">
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={clsx(
-              "block rounded-lg px-3 py-2 text-sm transition",
-              pathname === item.href
-                ? "bg-emerald-500/10 text-emerald-400"
-                : "text-neutral-400 hover:bg-neutral-800/60 hover:text-neutral-100",
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {NAV_ITEMS.map((item, index) => {
+          const active = pathname === item.href;
+          return (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.025, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Link
+                href={item.href}
+                className={clsx(
+                  "relative block rounded-lg px-3 py-2 text-sm transition-colors",
+                  active ? "text-emerald-400" : "text-neutral-400 hover:bg-neutral-800/60 hover:text-neutral-100",
+                )}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="sidebar-active-pill"
+                    className="absolute inset-0 rounded-lg bg-emerald-500/10"
+                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                  />
+                )}
+                <span className="relative">{item.label}</span>
+              </Link>
+            </motion.div>
+          );
+        })}
       </nav>
 
-      <div className="border-t border-neutral-800 p-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="border-t border-neutral-800 p-4"
+      >
         <p className="text-sm text-neutral-200">{user?.username}</p>
         <p className="text-xs text-neutral-500">{user?.role}</p>
-        <button
+        <motion.button
+          whileTap={{ scale: 0.97 }}
           onClick={logout}
-          className="mt-3 w-full rounded-lg border border-neutral-700 py-1.5 text-xs text-neutral-300 hover:bg-neutral-800"
+          className="mt-3 w-full rounded-lg border border-neutral-700 py-1.5 text-xs text-neutral-300 transition-colors hover:bg-neutral-800"
         >
           Sign out
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </aside>
   );
 }

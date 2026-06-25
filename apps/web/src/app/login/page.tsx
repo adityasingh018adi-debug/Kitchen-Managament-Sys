@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { api, ApiError } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 
@@ -42,58 +43,99 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-neutral-950 px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-neutral-800 bg-neutral-900/60 p-8 shadow-2xl backdrop-blur-xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">KitchenOS AI</h1>
+    <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-neutral-950 px-4">
+      <motion.div
+        className="pointer-events-none absolute -top-40 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-500/20 blur-3xl"
+        animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.15, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        initial={{ opacity: 0, y: 16, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full max-w-sm rounded-2xl border border-neutral-800 bg-neutral-900/60 p-8 shadow-2xl backdrop-blur-xl"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="text-2xl font-semibold tracking-tight text-white"
+        >
+          KitchenOS AI
+        </motion.h1>
         <p className="mt-1 text-sm text-neutral-400">Sign in to your kitchen workspace.</p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div>
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.4 }}>
             <label className="text-xs font-medium text-neutral-400">Username</label>
             <input
-              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-emerald-500"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
               required
             />
-          </div>
-          <div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.4 }}>
             <label className="text-xs font-medium text-neutral-400">Password</label>
             <input
               type="password"
-              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-emerald-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
               required
             />
-          </div>
+          </motion.div>
 
-          {requiresOtp && (
-            <div>
-              <label className="text-xs font-medium text-neutral-400">2FA Code</label>
-              <input
-                className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                inputMode="numeric"
-                maxLength={6}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {requiresOtp && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <label className="text-xs font-medium text-neutral-400">2FA Code</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-emerald-500"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  inputMode="numeric"
+                  maxLength={6}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          <AnimatePresence>
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-sm text-red-400"
+              >
+                {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-emerald-500 py-2 text-sm font-medium text-neutral-950 transition hover:bg-emerald-400 disabled:opacity-60"
+            whileHover={{ scale: loading ? 1 : 1.01 }}
+            whileTap={{ scale: loading ? 1 : 0.98 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.4 }}
+            className="w-full rounded-lg bg-emerald-500 py-2 text-sm font-medium text-neutral-950 transition-colors hover:bg-emerald-400 disabled:opacity-60"
           >
             {loading ? "Signing in…" : requiresOtp ? "Verify & Sign in" : "Sign in"}
-          </button>
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }
