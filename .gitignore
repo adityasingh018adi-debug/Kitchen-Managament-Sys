@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+out/
+*.log
+.env
+.env.local
+.DS_Store
+packages/db/node_modules/
+packages/db/prisma/generated/
+apps/api/dist/
+apps/web/.next/

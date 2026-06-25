@@ -1,0 +1,347 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  STAFF
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TaskStatus {
+  PENDING
+  WORKING
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum AttendanceEventType {
+  PUNCH_IN
+  PUNCH_OUT
+  BREAK_START
+  BREAK_END
+}
+
+enum InventoryUnit {
+  G
+  KG
+  ML
+  L
+  PCS
+  DOZEN
+  BOX
+}
+
+enum NotificationChannel {
+  IN_APP
+  PUSH
+  EMAIL
+  WHATSAPP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+// ---------------------------------------------------------------------------
+// Identity & Access
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         Role
+  isActive     Boolean  @default(true)
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  employee     Employee?
+  auditLogs    AuditLog[]
+  createdRecipes Recipe[] @relation("RecipeCreatedBy")
+  createdTasks   Task[]   @relation("TaskCreatedBy")
+  notifications  Notification[]
+
+  @@index([role])
+}
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  pinHash   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employees Employee[]
+  recipes   Recipe[]
+  tasks     Task[]
+}
+
+// ---------------------------------------------------------------------------
+// Employees
+// ---------------------------------------------------------------------------
+
+model Employee {
+  id               String         @id @default(cuid())
+  employeeCode     String         @unique
+  name             String
+  photoUrl         String?
+  mobileNumber     String
+  emergencyContact String?
+  joiningDate      DateTime
+  salary           Decimal?       @db.Decimal(12, 2)
+  status           EmployeeStatus @default(ACTIVE)
+  faceEmbeddingId  String?        // opaque reference to a face-recognition provider record
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  userId       String?    @unique
+  user         User?      @relation(fields: [userId], references: [id])
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  shiftId      String?
+  shift        Shift?     @relation(fields: [shiftId], references: [id])
+
+  taskAssignments   TaskAssignment[]
+  attendanceEvents  AttendanceEvent[]
+  qualityInspections QualityInspection[]
+
+  @@index([departmentId])
+}
+
+model Shift {
+  id          String   @id @default(cuid())
+  name        String
+  startTime   String   // "14:00"
+  endTime     String   // "00:00"
+  gracePeriodMinutes Int @default(10)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  employees Employee[]
+}
+
+// ---------------------------------------------------------------------------
+// Recipes
+// ---------------------------------------------------------------------------
+
+model Recipe {
+  id            String   @id @default(cuid())
+  name          String
+  category      String
+  photoUrl      String?
+  galleryUrls   String[] @default([])
+  videoUrl      String?
+  method        String
+  cookingTemp   String?
+  cookingTimeMinutes Int?
+  shelfLife     String?
+  storageMethod String?
+  notes         String?
+  portionSize   String?
+  batchSize     Decimal  @db.Decimal(12, 3) // the reference batch yield, e.g. 35 portions
+  yieldUnit     String   @default("portion")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  createdById  String
+  createdBy    User       @relation("RecipeCreatedBy", fields: [createdById], references: [id])
+
+  ingredients  RecipeIngredient[]
+  tasks        Task[]
+  qualityInspections QualityInspection[]
+
+  @@index([departmentId])
+  @@index([category])
+}
+
+model RecipeIngredient {
+  id        String        @id @default(cuid())
+  name      String
+  quantity  Decimal       @db.Decimal(12, 3) // quantity for the recipe's reference batchSize
+  unit      InventoryUnit
+
+  recipeId  String
+  recipe    Recipe        @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+}
+
+// ---------------------------------------------------------------------------
+// Tasks
+// ---------------------------------------------------------------------------
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(PENDING)
+  scheduledFor DateTime?
+  deadline    DateTime?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  proofPhotoUrl String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  recipeId    String?
+  recipe      Recipe?    @relation(fields: [recipeId], references: [id])
+
+  createdById String
+  createdBy   User       @relation("TaskCreatedBy", fields: [createdById], references: [id])
+
+  assignments TaskAssignment[]
+  qualityInspections QualityInspection[]
+
+  @@index([departmentId])
+  @@index([status])
+}
+
+model TaskAssignment {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  assignedAt DateTime @default(now())
+
+  @@unique([taskId, employeeId])
+  @@index([employeeId])
+}
+
+// ---------------------------------------------------------------------------
+// Attendance
+// ---------------------------------------------------------------------------
+
+model AttendanceEvent {
+  id         String              @id @default(cuid())
+  type       AttendanceEventType
+  occurredAt DateTime            @default(now())
+  photoUrl   String?
+  gpsLat     Float?
+  gpsLng     Float?
+  ipAddress  String?
+  device     String?
+  isLate     Boolean             @default(false)
+  isEarly    Boolean             @default(false)
+
+  employeeId String
+  employee   Employee            @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId, occurredAt])
+}
+
+// ---------------------------------------------------------------------------
+// AI Food Quality Inspection
+// ---------------------------------------------------------------------------
+
+model QualityInspection {
+  id              String   @id @default(cuid())
+  photoUrl        String
+  overallScore    Int      // 0-100
+  presentationScore Int?
+  accuracyScore     Int?
+  suggestions     String[] @default([])
+  rawProviderResponse Json?
+  createdAt       DateTime @default(now())
+
+  taskId     String?
+  task       Task?     @relation(fields: [taskId], references: [id])
+
+  recipeId   String?
+  recipe     Recipe?   @relation(fields: [recipeId], references: [id])
+
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+
+  @@index([taskId])
+}
+
+// ---------------------------------------------------------------------------
+// Inventory
+// ---------------------------------------------------------------------------
+
+model InventoryItem {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  unit         InventoryUnit
+  quantityOnHand Decimal     @db.Decimal(14, 3) @default(0)
+  reorderLevel Decimal       @db.Decimal(14, 3) @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Notifications
+// ---------------------------------------------------------------------------
+
+model Notification {
+  id        String              @id @default(cuid())
+  channel   NotificationChannel
+  status    NotificationStatus  @default(PENDING)
+  title     String
+  body      String
+  metadata  Json?
+  sentAt    DateTime?
+  createdAt DateTime            @default(now())
+
+  userId    String?
+  user      User?               @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// Audit Log
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g. "RECIPE_UPDATED", "PASSWORD_CHANGED"
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([entity, entityId])
+}
