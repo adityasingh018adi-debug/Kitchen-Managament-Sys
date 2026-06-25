@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Ip, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
-import { PunchDto } from './dto/attendance.dto';
+import { PunchDto, RecognizeDto } from './dto/attendance.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -11,6 +11,11 @@ export class AttendanceController {
   @Post('punch')
   punch(@Body() dto: PunchDto, @Ip() ip: string) {
     return this.attendanceService.punch(dto, ip);
+  }
+
+  @Post('recognize')
+  recognize(@Body() dto: RecognizeDto) {
+    return this.attendanceService.recognize(dto.photoUrl);
   }
 
   @Get('employee/:employeeId')

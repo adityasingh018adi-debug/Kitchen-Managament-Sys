@@ -34,3 +34,8 @@ export class UpdateEmployeeStatusDto {
   @IsIn(['ACTIVE', 'INACTIVE'])
   status: EmployeeStatus;
 }
+
+export class FaceEnrollDto {
+  @IsString()
+  photoUrl: string;
+}

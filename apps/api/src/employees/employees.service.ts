@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { AuditService } from '../audit/audit.service';
-import { CreateEmployeeDto, UpdateEmployeeStatusDto } from './dto/employee.dto';
+import { CreateEmployeeDto, UpdateEmployeeStatusDto, FaceEnrollDto } from './dto/employee.dto';
+import { FACE_RECOGNITION_PROVIDER, FaceRecognitionProvider } from '../ai/interfaces/face-recognition-provider.interface';
 
 @Injectable()
 export class EmployeesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    @Inject(FACE_RECOGNITION_PROVIDER)
+    private readonly faceRecognition: FaceRecognitionProvider,
   ) {}
 
   findAll(departmentId?: string) {
@@ -58,6 +61,21 @@ export class EmployeesService {
       entityId: employee.id,
       userId: actorId,
       metadata: { status: dto.status },
+    });
+    return employee;
+  }
+
+  async faceEnroll(id: string, dto: FaceEnrollDto, actorId: string) {
+    const { faceEmbeddingId } = await this.faceRecognition.enroll(id, dto.photoUrl);
+    const employee = await this.prisma.employee.update({
+      where: { id },
+      data: { faceEmbeddingId, photoUrl: dto.photoUrl },
+    });
+    await this.audit.log({
+      action: 'EMPLOYEE_FACE_ENROLLED',
+      entity: 'Employee',
+      entityId: employee.id,
+      userId: actorId,
     });
     return employee;
   }

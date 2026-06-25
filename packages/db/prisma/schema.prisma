@@ -87,6 +87,7 @@ model User {
   createdRecipes Recipe[] @relation("RecipeCreatedBy")
   createdTasks   Task[]   @relation("TaskCreatedBy")
   notifications  Notification[]
+  inventoryMovements InventoryMovement[]
 
   @@index([role])
 }
@@ -306,6 +307,29 @@ model InventoryItem {
   reorderLevel Decimal       @db.Decimal(14, 3) @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
+  movements    InventoryMovement[]
+}
+
+enum InventoryMovementType {
+  STOCK_IN
+  STOCK_OUT
+}
+
+model InventoryMovement {
+  id         String                 @id @default(cuid())
+  type       InventoryMovementType
+  quantity   Decimal                @db.Decimal(14, 3)
+  reason     String?
+  createdAt  DateTime               @default(now())
+
+  itemId     String
+  item       InventoryItem          @relation(fields: [itemId], references: [id])
+
+  userId     String?
+  user       User?                  @relation(fields: [userId], references: [id])
+
+  @@index([itemId])
 }
 
 // ---------------------------------------------------------------------------

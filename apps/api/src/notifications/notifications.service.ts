@@ -44,4 +44,12 @@ export class NotificationsService {
       take: 50,
     });
   }
+
+  findByChannel(channel: NotificationChannel) {
+    return this.prisma.notification.findMany({
+      where: { channel },
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+  }
 }

@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PunchDto } from './dto/attendance.dto';
+import { FACE_RECOGNITION_PROVIDER, FaceRecognitionProvider } from '../ai/interfaces/face-recognition-provider.interface';
 
 @Injectable()
 export class AttendanceService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
+    @Inject(FACE_RECOGNITION_PROVIDER)
+    private readonly faceRecognition: FaceRecognitionProvider,
   ) {}
 
   async punch(dto: PunchDto, ipAddress?: string) {
@@ -61,6 +64,10 @@ export class AttendanceService {
     const deadline = new Date(occurredAt);
     deadline.setHours(hours, minutes + graceMinutes, 0, 0);
     return Math.round((occurredAt.getTime() - deadline.getTime()) / 60000);
+  }
+
+  recognize(photoUrl: string) {
+    return this.faceRecognition.recognize(photoUrl);
   }
 
   findForEmployee(employeeId: string, from?: Date, to?: Date) {

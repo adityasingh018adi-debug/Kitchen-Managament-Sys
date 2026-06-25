@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 import { Card } from "@/components/card";
+import { CameraCapture } from "@/components/camera-capture";
 
 interface Employee {
   id: string;
   name: string;
+}
+
+interface RecognizeResult {
+  matched: boolean;
+  employeeId?: string;
+  confidence: number;
 }
 
 export default function AttendancePage() {
@@ -15,6 +22,7 @@ export default function AttendancePage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [employeeId, setEmployeeId] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const [scanning, setScanning] = useState(false);
 
   useEffect(() => {
     if (!token) return;
@@ -32,15 +40,47 @@ export default function AttendancePage() {
     }
   }
 
+  async function onScanned(photoUrl: string) {
+    if (!token) return;
+    try {
+      const result = await api.post<RecognizeResult>("/attendance/recognize", { photoUrl }, token);
+      if (result.matched && result.employeeId) {
+        setEmployeeId(result.employeeId);
+        setMessage("Face recognized — employee selected.");
+      } else {
+        setMessage("No face match (mock provider always misses) — please select your name manually below.");
+      }
+    } catch (err) {
+      setMessage(err instanceof ApiError ? err.message : "Recognition failed");
+    } finally {
+      setScanning(false);
+    }
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-semibold text-white">Attendance Kiosk</h1>
       <p className="mt-1 text-sm text-neutral-500">
-        Face recognition camera capture is mocked for now — select an employee to punch in/out.
+        Face recognition is backed by a mocked provider — it always returns no match, so manual
+        selection below is the reliable fallback until a real provider is wired in.
       </p>
 
       <Card className="mt-6 max-w-sm">
-        <label className="text-xs font-medium text-neutral-400">Employee</label>
+        <label className="text-xs font-medium text-neutral-400">Scan face</label>
+        <div className="mt-1">
+          {scanning ? (
+            <CameraCapture token={token ?? ""} label="Scan" onUploaded={onScanned} onError={setMessage} />
+          ) : (
+            <button
+              onClick={() => setScanning(true)}
+              className="rounded-lg border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:bg-neutral-800"
+            >
+              Start face scan
+            </button>
+          )}
+        </div>
+
+        <label className="mt-4 block text-xs font-medium text-neutral-400">Employee</label>
         <select
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}

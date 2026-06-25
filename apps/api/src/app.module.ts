@@ -12,6 +12,11 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AiModule } from './ai/ai.module';
+import { StorageModule } from './storage/storage.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { ReportsModule } from './reports/reports.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -24,10 +29,15 @@ import { AiModule } from './ai/ai.module';
     EmployeesModule,
     RecipesModule,
     AiModule,
+    StorageModule,
     TasksModule,
     NotificationsModule,
     AttendanceModule,
     DashboardModule,
+    InventoryModule,
+    ReportsModule,
+    AnalyticsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

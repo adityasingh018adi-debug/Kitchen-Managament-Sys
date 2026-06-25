@@ -26,3 +26,8 @@ export class PunchDto {
   @IsString()
   device?: string;
 }
+
+export class RecognizeDto {
+  @IsString()
+  photoUrl: string;
+}

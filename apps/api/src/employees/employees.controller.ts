@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { Role } from '@kitchenos/db';
 import { EmployeesService } from './employees.service';
-import { CreateEmployeeDto, UpdateEmployeeStatusDto } from './dto/employee.dto';
+import { CreateEmployeeDto, UpdateEmployeeStatusDto, FaceEnrollDto } from './dto/employee.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -36,5 +36,15 @@ export class EmployeesController {
     @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.employeesService.updateStatus(id, dto, user.userId);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @Patch(':id/face-enroll')
+  faceEnroll(
+    @Param('id') id: string,
+    @Body() dto: FaceEnrollDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.employeesService.faceEnroll(id, dto, user.userId);
   }
 }
