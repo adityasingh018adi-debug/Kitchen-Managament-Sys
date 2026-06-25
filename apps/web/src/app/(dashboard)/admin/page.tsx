@@ -121,7 +121,7 @@ export default function AdminPage() {
                   <select
                     value={user.role}
                     onChange={(e) => changeRole(user, e.target.value as AdminUser["role"])}
-                    className="rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1 text-xs text-white outline-none focus:border-emerald-500"
+                    className="rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1 text-xs text-white outline-none focus:border-violet-500"
                   >
                     {ROLES.map((r) => (
                       <option key={r} value={r}>{r}</option>
@@ -130,7 +130,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => toggleActive(user)}
                     className={`rounded-full px-2 py-1 text-xs font-medium ${
-                      user.isActive ? "bg-emerald-500/10 text-emerald-400" : "bg-neutral-700/40 text-neutral-400"
+                      user.isActive ? "bg-violet-500/10 text-violet-400" : "bg-neutral-700/40 text-neutral-400"
                     }`}
                   >
                     {user.isActive ? "Active" : "Inactive"}
@@ -147,19 +147,19 @@ export default function AdminPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             />
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password (min 8 chars)"
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             />
             <select
               value={newRole}
               onChange={(e) => setNewRole(e.target.value as AdminUser["role"])}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             >
               {ROLES.map((r) => (
                 <option key={r} value={r}>{r}</option>
@@ -167,7 +167,7 @@ export default function AdminPage() {
             </select>
             <button
               onClick={createUser}
-              className="w-full rounded-lg bg-emerald-500 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400"
+              className="w-full rounded-lg bg-violet-500 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400"
             >
               Create user
             </button>
@@ -182,7 +182,7 @@ export default function AdminPage() {
                 value={entityFilter}
                 onChange={(e) => setEntityFilter(e.target.value)}
                 placeholder="Filter by entity (e.g. User)"
-                className="rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1 text-xs text-white outline-none focus:border-emerald-500"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1 text-xs text-white outline-none focus:border-violet-500"
               />
               <button
                 onClick={loadLogs}

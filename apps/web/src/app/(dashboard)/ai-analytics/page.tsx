@@ -62,7 +62,7 @@ export default function AiAnalyticsPage() {
             {summary.qualityTrend.map((point) => (
               <div key={point.date} className="flex flex-1 flex-col items-center gap-1">
                 <div
-                  className="w-full rounded-t bg-emerald-500/70"
+                  className="w-full rounded-t bg-violet-500/70"
                   style={{ height: `${Math.max(4, (point.value ?? 0) * 0.8)}px` }}
                   title={`${point.date}: ${point.value ?? "no data"}`}
                 />
@@ -80,12 +80,12 @@ export default function AiAnalyticsPage() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="e.g. How is task completion trending?"
-            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
           />
           <button
             onClick={ask}
             disabled={asking}
-            className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400 disabled:opacity-50"
+            className="rounded-lg bg-violet-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400 disabled:opacity-50"
           >
             {asking ? "Asking…" : "Ask"}
           </button>

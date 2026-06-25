@@ -87,7 +87,7 @@ export default function NewRecipePage() {
               value={departmentId}
               onChange={(e) => setDepartmentId(e.target.value)}
               required
-              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             >
               <option value="" disabled>Select department</option>
               {departments.map((d) => (
@@ -102,7 +102,7 @@ export default function NewRecipePage() {
                 min={1}
                 value={batchSize}
                 onChange={(e) => setBatchSize(Number(e.target.value))}
-                className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+                className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
               />
             </Field>
             <Field label="Yield Unit">
@@ -115,7 +115,7 @@ export default function NewRecipePage() {
               onChange={(e) => setMethod(e.target.value)}
               required
               rows={4}
-              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             />
           </Field>
         </Card>
@@ -126,7 +126,7 @@ export default function NewRecipePage() {
             <button
               type="button"
               onClick={() => setIngredients((rows) => [...rows, { name: "", quantity: "", unit: "G" }])}
-              className="text-xs text-emerald-400 hover:underline"
+              className="text-xs text-violet-400 hover:underline"
             >
               + Add ingredient
             </button>
@@ -137,19 +137,19 @@ export default function NewRecipePage() {
                 placeholder="Ingredient name"
                 value={row.name}
                 onChange={(e) => updateIngredient(index, { name: e.target.value })}
-                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
               />
               <input
                 placeholder="Qty"
                 type="number"
                 value={row.quantity}
                 onChange={(e) => updateIngredient(index, { quantity: e.target.value })}
-                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
               />
               <select
                 value={row.unit}
                 onChange={(e) => updateIngredient(index, { unit: e.target.value })}
-                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
               >
                 {UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
               </select>
@@ -162,7 +162,7 @@ export default function NewRecipePage() {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-lg bg-emerald-500 px-5 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400 disabled:opacity-60"
+          className="rounded-lg bg-violet-500 px-5 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400 disabled:opacity-60"
         >
           {submitting ? "Saving…" : "Create Recipe"}
         </button>
@@ -194,7 +194,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       required={required}
-      className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+      className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
     />
   );
 }

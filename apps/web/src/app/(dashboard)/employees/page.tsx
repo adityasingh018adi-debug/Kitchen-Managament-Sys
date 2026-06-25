@@ -50,7 +50,7 @@ export default function EmployeesPage() {
         swap <code className="text-neutral-400">FACE_RECOGNITION_PROVIDER</code> for a real SDK to go live.
       </p>
 
-      {message && <p className="mt-3 text-sm text-emerald-400">{message}</p>}
+      {message && <p className="mt-3 text-sm text-violet-400">{message}</p>}
 
       <div className="mt-6 space-y-2">
         {employees.map((employee) => (
@@ -64,7 +64,7 @@ export default function EmployeesPage() {
                 <span
                   className={
                     employee.faceEmbeddingId
-                      ? "rounded-full bg-emerald-500/10 px-2 py-1 text-xs text-emerald-400"
+                      ? "rounded-full bg-violet-500/10 px-2 py-1 text-xs text-violet-400"
                       : "rounded-full bg-neutral-700/40 px-2 py-1 text-xs text-neutral-400"
                   }
                 >
@@ -73,7 +73,7 @@ export default function EmployeesPage() {
                 <span
                   className={
                     employee.status === "ACTIVE"
-                      ? "rounded-full bg-emerald-500/10 px-2 py-1 text-xs text-emerald-400"
+                      ? "rounded-full bg-violet-500/10 px-2 py-1 text-xs text-violet-400"
                       : "rounded-full bg-neutral-700/40 px-2 py-1 text-xs text-neutral-400"
                   }
                 >

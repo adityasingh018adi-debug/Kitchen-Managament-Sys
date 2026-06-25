@@ -81,7 +81,7 @@ export function CameraCapture({ token, onUploaded, onError, label = "Capture" }:
             <button
               onClick={capture}
               disabled={busy}
-              className="rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-neutral-950 hover:bg-emerald-400 disabled:opacity-50"
+              className="rounded-lg bg-violet-500 px-3 py-1.5 text-sm font-medium text-neutral-950 hover:bg-violet-400 disabled:opacity-50"
             >
               {busy ? "Uploading…" : label}
             </button>

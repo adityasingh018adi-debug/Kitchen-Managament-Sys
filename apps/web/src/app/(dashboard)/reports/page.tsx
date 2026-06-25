@@ -58,13 +58,13 @@ export default function ReportsPage() {
             type="date"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
-            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
           />
           <input
             type="date"
             value={to}
             onChange={(e) => setTo(e.target.value)}
-            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+            className="flex-1 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
           />
         </div>
       </Card>
@@ -78,7 +78,7 @@ export default function ReportsPage() {
             <button
               onClick={() => download(report.key, report.ranged)}
               disabled={downloading === report.key}
-              className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-medium text-neutral-950 hover:bg-emerald-400 disabled:opacity-50"
+              className="rounded-lg bg-violet-500 px-3 py-1.5 text-xs font-medium text-neutral-950 hover:bg-violet-400 disabled:opacity-50"
             >
               {downloading === report.key ? "Generating…" : "Download"}
             </button>

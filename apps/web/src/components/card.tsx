@@ -9,7 +9,7 @@ export function Card({ className, children }: { className?: string; children: Re
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3, boxShadow: "0 12px 32px -8px rgba(16,185,129,0.15)" }}
+      whileHover={{ y: -3, boxShadow: "0 12px 32px -8px rgba(139,92,246,0.25)" }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className={clsx(
         "rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-xl backdrop-blur-xl",

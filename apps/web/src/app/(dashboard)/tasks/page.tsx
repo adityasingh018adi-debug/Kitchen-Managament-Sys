@@ -90,7 +90,7 @@ export default function TasksPage() {
                     {task.status === "PENDING" && (
                       <button
                         onClick={() => startTask(task.id)}
-                        className="mt-3 w-full rounded-lg bg-emerald-500 py-1.5 text-xs font-medium text-neutral-950 hover:bg-emerald-400"
+                        className="mt-3 w-full rounded-lg bg-violet-500 py-1.5 text-xs font-medium text-neutral-950 hover:bg-violet-400"
                       >
                         Start Task
                       </button>
@@ -104,11 +104,11 @@ export default function TasksPage() {
                           onChange={(e) =>
                             setProofUrls((urls) => ({ ...urls, [task.id]: e.target.value }))
                           }
-                          className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1.5 text-xs text-white outline-none focus:border-emerald-500"
+                          className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1.5 text-xs text-white outline-none focus:border-violet-500"
                         />
                         <button
                           onClick={() => finishTask(task.id)}
-                          className="w-full rounded-lg bg-emerald-500 py-1.5 text-xs font-medium text-neutral-950 hover:bg-emerald-400"
+                          className="w-full rounded-lg bg-violet-500 py-1.5 text-xs font-medium text-neutral-950 hover:bg-violet-400"
                         >
                           Finish Task
                         </button>
@@ -116,7 +116,7 @@ export default function TasksPage() {
                     )}
 
                     {task.status === "COMPLETED" && task.startedAt && task.finishedAt && (
-                      <p className="mt-2 text-xs text-emerald-400">
+                      <p className="mt-2 text-xs text-violet-400">
                         {Math.round(
                           (new Date(task.finishedAt).getTime() - new Date(task.startedAt).getTime()) / 60000,
                         )}{" "}

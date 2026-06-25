@@ -84,7 +84,7 @@ export default function AttendancePage() {
         <select
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+          className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
         >
           <option value="" disabled>Select employee</option>
           {employees.map((e) => (
@@ -95,7 +95,7 @@ export default function AttendancePage() {
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             onClick={() => punch("PUNCH_IN")}
-            className="rounded-lg bg-emerald-500 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400"
+            className="rounded-lg bg-violet-500 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400"
           >
             Punch In
           </button>

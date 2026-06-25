@@ -37,7 +37,9 @@ export function Sidebar() {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="px-5 py-6"
       >
-        <p className="text-lg font-semibold text-white">KitchenOS AI</p>
+        <p className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-blue-400 bg-clip-text text-lg font-semibold text-transparent">
+          KitchenOS AI
+        </p>
         <p className="text-xs text-neutral-500">Central Kitchen Management</p>
       </motion.div>
 
@@ -55,13 +57,13 @@ export function Sidebar() {
                 href={item.href}
                 className={clsx(
                   "relative block rounded-lg px-3 py-2 text-sm transition-colors",
-                  active ? "text-emerald-400" : "text-neutral-400 hover:bg-neutral-800/60 hover:text-neutral-100",
+                  active ? "text-violet-400" : "text-neutral-400 hover:bg-neutral-800/60 hover:text-neutral-100",
                 )}
               >
                 {active && (
                   <motion.span
                     layoutId="sidebar-active-pill"
-                    className="absolute inset-0 rounded-lg bg-emerald-500/10"
+                    className="absolute inset-0 rounded-lg bg-violet-500/10"
                     transition={{ type: "spring", stiffness: 400, damping: 35 }}
                   />
                 )}

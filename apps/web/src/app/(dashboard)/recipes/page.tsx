@@ -39,7 +39,7 @@ export default function RecipesPage() {
         {canCreate && (
           <Link
             href="/recipes/new"
-            className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400"
+            className="rounded-lg bg-violet-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400"
           >
             New Recipe
           </Link>
@@ -50,13 +50,13 @@ export default function RecipesPage() {
         placeholder="Search recipes…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mt-6 w-full max-w-sm rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+        className="mt-6 w-full max-w-sm rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
       />
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
           <Link key={recipe.id} href={`/recipes/${recipe.id}`}>
-            <Card className="h-full transition hover:border-emerald-500/40">
+            <Card className="h-full transition hover:border-violet-500/40">
               <p className="text-xs uppercase tracking-wide text-neutral-500">{recipe.category}</p>
               <p className="mt-1 text-lg font-semibold text-white">{recipe.name}</p>
               <p className="mt-2 text-sm text-neutral-400">

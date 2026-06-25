@@ -78,12 +78,12 @@ export default function InventoryPage() {
               placeholder="Name"
               value={newItem.name}
               onChange={(e) => setNewItem((prev) => ({ ...prev, name: e.target.value }))}
-              className="col-span-3 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 sm:col-span-1"
+              className="col-span-3 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500 sm:col-span-1"
             />
             <select
               value={newItem.unit}
               onChange={(e) => setNewItem((prev) => ({ ...prev, unit: e.target.value }))}
-              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             >
               {UNITS.map((u) => (
                 <option key={u} value={u}>{u}</option>
@@ -94,12 +94,12 @@ export default function InventoryPage() {
               placeholder="Reorder level"
               value={newItem.reorderLevel}
               onChange={(e) => setNewItem((prev) => ({ ...prev, reorderLevel: e.target.value }))}
-              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
             />
           </div>
           <button
             onClick={createItem}
-            className="mt-3 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400"
+            className="mt-3 rounded-lg bg-violet-500 px-4 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400"
           >
             Add item
           </button>
@@ -128,11 +128,11 @@ export default function InventoryPage() {
                 placeholder="Qty"
                 value={adjusting[item.id] ?? ""}
                 onChange={(e) => setAdjusting((prev) => ({ ...prev, [item.id]: e.target.value }))}
-                className="w-20 rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1.5 text-sm text-white outline-none focus:border-emerald-500"
+                className="w-20 rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1.5 text-sm text-white outline-none focus:border-violet-500"
               />
               <button
                 onClick={() => adjust(item.id, "STOCK_IN")}
-                className="rounded-lg bg-emerald-500/90 px-3 py-1.5 text-xs font-medium text-neutral-950 hover:bg-emerald-400"
+                className="rounded-lg bg-violet-500/90 px-3 py-1.5 text-xs font-medium text-neutral-950 hover:bg-violet-400"
               >
                 Stock in
               </button>

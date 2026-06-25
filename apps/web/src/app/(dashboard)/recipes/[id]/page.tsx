@@ -124,11 +124,11 @@ export default function RecipeDetailPage() {
           min={1}
           value={portions}
           onChange={(e) => setPortions(Number(e.target.value))}
-          className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
+          className="mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white outline-none focus:border-violet-500"
         />
         <button
           onClick={handleCalculate}
-          className="mt-3 w-full rounded-lg bg-emerald-500 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400"
+          className="mt-3 w-full rounded-lg bg-violet-500 py-2 text-sm font-medium text-neutral-950 hover:bg-violet-400"
         >
           Calculate
         </button>
@@ -144,7 +144,7 @@ export default function RecipeDetailPage() {
               {scaled.ingredients.map((ingredient) => (
                 <li key={ingredient.name} className="flex justify-between py-2">
                   <span className="text-neutral-300">{ingredient.name}</span>
-                  <span className="font-medium text-emerald-400">
+                  <span className="font-medium text-violet-400">
                     {ingredient.scaledQuantity} {ingredient.unit}
                   </span>
                 </li>

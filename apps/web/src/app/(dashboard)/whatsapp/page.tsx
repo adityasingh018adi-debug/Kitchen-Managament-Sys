@@ -38,7 +38,7 @@ export default function WhatsappPage() {
               <p className="text-sm font-medium text-white">{item.title}</p>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                  item.status === "SENT" ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"
+                  item.status === "SENT" ? "bg-violet-500/20 text-violet-400" : "bg-amber-500/20 text-amber-400"
                 }`}
               >
                 {item.status}
