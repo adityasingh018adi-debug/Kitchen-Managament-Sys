@@ -1,0 +1,10 @@
+{
+  "name": "KitchenOS AI",
+  "short_name": "KitchenOS",
+  "description": "AI Powered Central Kitchen Management System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": []
+}
